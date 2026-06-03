@@ -15,7 +15,8 @@ class TrainDataset(data.Dataset):
 
     def __getitem__(self, index):
         hazy_image_name = self.hazy_image_list[index]
-        clear_image_name = hazy_image_name.split('_')[0] + '.png'
+        base_name = os.path.splitext(hazy_image_name)[0]
+        clear_image_name = '_'.join(base_name.split('_')[:-2]) + '.jpg'
 
         hazy_image_path = os.path.join(self.hazy_path, hazy_image_name)
         clear_image_path = os.path.join(self.clear_path, clear_image_name)
@@ -57,7 +58,8 @@ class TestDataset(data.Dataset):
         # data shape: C*H*W
 
         hazy_image_name = self.hazy_image_list[index]
-        clear_image_name = hazy_image_name.split('_')[0] + '.png'
+        base_name = os.path.splitext(hazy_image_name)[0]
+        clear_image_name = '_'.join(base_name.split('_')[:-2]) + '.jpg'
 
         hazy_image_path = os.path.join(self.hazy_path, hazy_image_name)
         clear_image_path = os.path.join(self.clear_path, clear_image_name)
@@ -88,7 +90,8 @@ class ValDataset(data.Dataset):
 
     def __getitem__(self, index):
         hazy_image_name = self.hazy_image_list[index]
-        clear_image_name = hazy_image_name.split('_')[0] + '.png'
+        base_name = os.path.splitext(hazy_image_name)[0]
+        clear_image_name = '_'.join(base_name.split('_')[:-2]) + '.jpg'
 
         hazy_image_path = os.path.join(self.hazy_path, hazy_image_name)
         clear_image_path = os.path.join(self.clear_path, clear_image_name)
