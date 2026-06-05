@@ -4,8 +4,8 @@ import json
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--exp_dir', type=str, default='../experiment')
-parser.add_argument('--dataset', type=str, default='ITS')
+parser.add_argument('--exp_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/experiment')
+parser.add_argument('--dataset', type=str, default='NYU2')
 parser.add_argument('--val_dataset_dir', type=str)
 parser.add_argument('--model_name', type=str, default='DEA-Net', help='experiment name')
 parser.add_argument('--saved_infer_dir', type=str, default='saved_infer_dir')
