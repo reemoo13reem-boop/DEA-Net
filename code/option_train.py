@@ -9,8 +9,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--device', type=str,default='Automatic detection')
 
 parser.add_argument('--epochs', type=int,default=100)
-parser.add_argument('--iters_per_epoch', type=int,default=5000)
-parser.add_argument('--finer_eval_step', type=int,default=400000)
+parser.add_argument('--iters_per_epoch', type=int,default=2000)
+parser.add_argument('--finer_eval_step', type=int,default=180000)
 parser.add_argument('--bs', type=int,default=16,help='batch size')
 parser.add_argument('--start_lr', default=0.0004, type=float, help='start learning rate')
 parser.add_argument('--end_lr', default=0.000001, type=float, help='end learning rate')
@@ -22,12 +22,14 @@ parser.add_argument('--w_loss_CR', default=0.1, type=float, help='weight of loss
 
 parser.add_argument('--exp_dir', type=str, default='../experiment')
 parser.add_argument('--model_name', type=str, default='MDCTDN')
+parser.add_argument('--hazy_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/training_images/data')
+parser.add_argument('--clear_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/original_image/image')
 parser.add_argument('--saved_model_dir', type=str, default='saved_model')
 parser.add_argument('--saved_data_dir', type=str, default='saved_data')
 parser.add_argument('--saved_plot_dir', type=str, default='saved_plot')
 parser.add_argument('--saved_infer_dir', type=str, default='saved_infer_dir')
 
-parser.add_argument('--dataset', type=str, default='ITS')
+parser.add_argument('--dataset', type=str, default='NYU2')
 
 # only need for resume
 parser.add_argument('--resume', type=bool,default=False)
