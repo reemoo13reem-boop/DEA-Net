@@ -154,8 +154,9 @@ def val(net, loader_val):
             inputs = pad_img(inputs, 4)
             pred = net(inputs).clamp(0, 1)
             pred = pred[:, :, :H, :W]
-            # save_path = os.path.join(opt.saved_infer_dir, hazy_name[0])
-            # save_image(pred, save_path)
+            
+        save_path = os.path.join(opt.saved_infer_dir, hazy_name[0])
+        save_image(pred, save_path)
         ssim_tmp = ssim(pred, targets).item()
         psnr_tmp = psnr(pred, targets)
         ssims.append(ssim_tmp)
