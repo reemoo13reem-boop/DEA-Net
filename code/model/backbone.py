@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .modules import *
+from model.modules import *
 
 
 def default_conv(in_channels, out_channels, kernel_size, bias=True):
