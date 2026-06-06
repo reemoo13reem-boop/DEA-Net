@@ -17,7 +17,6 @@ from data.data_loader import TrainDataset, ValDataset, create_train_val_split
 
 
 start_time = time.time()
-start_time = time.time()
 steps = opt.iters_per_epoch * opt.epochs
 T = steps
 
@@ -30,7 +29,6 @@ def lr_schedule_cosdecay(t, T, init_lr=opt.start_lr, end_lr=opt.end_lr):
 def train(net, loader_train, loader_val, optim, criterion,
           start_step=0, max_psnr=0, max_ssim=0,
           losses=None, psnrs=None, ssims=None):
-    losses = []
     loss_log = {'L1': [], 'CR': [], 'total': []}
     loss_log_tmp = {'L1': [], 'CR': [], 'total': []}
     psnr_log = []
@@ -89,7 +87,7 @@ def train(net, loader_train, loader_val, optim, criterion,
             else:
                 epoch = int(step / opt.iters_per_epoch)
             with torch.no_grad():
-                ssim_eval, psnr_eval = test(net, loader_val)
+                ssim_eval, psnr_eval = val(net, loader_val)
 
             log = f'\nstep :{step} | epoch: {epoch} | ssim:{ssim_eval:.4f}| psnr:{psnr_eval:.4f}'
             print(log)
@@ -179,10 +177,11 @@ if __name__ == "__main__":
 
     set_seed_torch(666)
 
-    hazy_dir = '/kaggle/input/datasets/reemsss/dea-net/training_images/data'
-    clear_dir = '/kaggle/input/datasets/reemsss/dea-net/original_image/image'
-    train_set = TrainDataset(hazy_dir, clear_dir)
-    val_set = ValDataset(hazy_dir, clear_dir)
+    hazy_dir = opt.hazy_dir
+    clear_dir = opt.clear_dir
+    train_list, val_list = create_train_val_split(hazy_dir, clear_dir, val_ratio=0.1)
+    train_set = TrainDataset(train_list)
+    val_set = ValDataset(val_list)
     loader_train = DataLoader(dataset=train_set, batch_size=16, shuffle=True, num_workers=12)
     loader_val = DataLoader(dataset=val_set, batch_size=1, shuffle=False, num_workers=4)
 
