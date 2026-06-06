@@ -13,7 +13,7 @@ from metric import psnr, ssim
 from model import DEANet
 from loss import ContrastLoss
 from option_train import opt
-from data.data_loader import TrainDataset, TestDataset
+from data.data_loader import TrainDataset, ValDataset
 
 
 start_time = time.time()
@@ -27,7 +27,7 @@ def lr_schedule_cosdecay(t, T, init_lr=opt.start_lr, end_lr=opt.end_lr):
     return lr
 
 
-def train(net, loader_train, loader_test, optim, criterion):
+def train(net, loader_train, loader_val, optim, criterion):
     losses = []
 
     loss_log = {'L1': [], 'CR': [], 'total': []}
@@ -85,7 +85,7 @@ def train(net, loader_train, loader_test, optim, criterion):
             else:
                 epoch = int(step / opt.iters_per_epoch)
             with torch.no_grad():
-                ssim_eval, psnr_eval = test(net, loader_test)
+                ssim_eval, psnr_eval = test(net, loader_val)
 
             log = f'\nstep :{step} | epoch: {epoch} | ssim:{ssim_eval:.4f}| psnr:{psnr_eval:.4f}'
             print(log)
@@ -137,15 +137,16 @@ def pad_img(x, patch_size):
     x = F.pad(x, (0, mod_pad_w, 0, mod_pad_h), 'reflect')
     return x
 
-def test(net, loader_test):
+def val(net, loader_val):
     net.eval()
     torch.cuda.empty_cache()
     ssims = []
     psnrs = []
 
-    for i, (inputs, targets, hazy_name) in enumerate(loader_test):
-        inputs = inputs.to(opt.device)
-        targets = targets.to(opt.device)
+    for i, batch in enumerate(loader_val):
+        inputs = batch['hazy'].to(opt.device)
+        targets = batch['clear'].to(opt.device)
+        hazy_name = batch['filename']
         with torch.no_grad():
             H, W = inputs.shape[2:]
             inputs = pad_img(inputs, 4)
@@ -174,12 +175,12 @@ if __name__ == "__main__":
 
     set_seed_torch(666)
 
-    train_dir = '../dataset/RESIDE/ITS/train'
-    train_set = TrainDataset(os.path.join(train_dir, 'hazy'), os.path.join(train_dir, 'clear'))
-    test_dir = '../dataset/RESIDE/ITS/test'
-    test_set = TestDataset(os.path.join(test_dir, 'hazy'), os.path.join(test_dir, 'clear'))
+    hazy_dir = '/kaggle/input/datasets/reemsss/dea-net/training_images/data'
+    clear_dir = '/kaggle/input/datasets/reemsss/dea-net/original_image/image'
+    train_set = TrainDataset(hazy_dir, clear_dir)
+    val_set = ValDataset(hazy_dir, clear_dir)
     loader_train = DataLoader(dataset=train_set, batch_size=16, shuffle=True, num_workers=12)
-    loader_test = DataLoader(dataset=test_set, batch_size=1, shuffle=False, num_workers=4)
+    loader_val = DataLoader(dataset=val_set, batch_size=1, shuffle=False, num_workers=4)
 
     net = DEANet(base_dim=32)
     net = net.to(opt.device)
@@ -200,4 +201,4 @@ if __name__ == "__main__":
     optimizer = optim.Adam(params=filter(lambda x: x.requires_grad, net.parameters()), lr=opt.start_lr, betas=(0.9, 0.999),
                            eps=1e-08)
     optimizer.zero_grad()
-    train(net, loader_train, loader_test, optimizer, criterion)
+    train(net, loader_train, loader_val, optimizer, criterion)
