@@ -1,7 +1,7 @@
 from torch import nn
 
-from .deconv import DEConv
-from .cga import SpatialAttention, ChannelAttention, PixelAttention
+from model.modules.deconv import DEConv
+from model.modules.cga import SpatialAttention, ChannelAttention, PixelAttention
 
 
 class DEABlockTrain(nn.Module):
