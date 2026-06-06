@@ -27,18 +27,28 @@ def lr_schedule_cosdecay(t, T, init_lr=opt.start_lr, end_lr=opt.end_lr):
     return lr
 
 
-def train(net, loader_train, loader_val, optim, criterion):
+def train(net, loader_train, loader_val,
+          optim, criterion,
+          start_step=0,
+          max_psnr=0,
+          max_ssim=0,
+          losses=None,
+          psnrs=None,
+          ssims=None):
     losses = []
 
     loss_log = {'L1': [], 'CR': [], 'total': []}
     loss_log_tmp = {'L1': [], 'CR': [], 'total': []}
     psnr_log = []
 
-    start_step = 0
-    max_ssim = 0
-    max_psnr = 0
-    ssims = []
-    psnrs = []
+    if losses is None:
+    losses = []
+    
+    if psnrs is None:
+        psnrs = []
+    
+    if ssims is None:
+        ssims = []
 
     loader_train_iter = iter(loader_train)
 
@@ -198,7 +208,25 @@ if __name__ == "__main__":
     criterion.append(nn.L1Loss().to(opt.device))
     criterion.append(ContrastLoss(ablation=False))
 
-    optimizer = optim.Adam(params=filter(lambda x: x.requires_grad, net.parameters()), lr=opt.start_lr, betas=(0.9, 0.999),
-                           eps=1e-08)
+    optimizer = optim.Adam(params=filter(lambda x: x.requires_grad, net.parameters()), lr=opt.start_lr, betas=(0.9, 0.999), eps=1e-08)
     optimizer.zero_grad()
-    train(net, loader_train, loader_val, optimizer, criterion)
+    start_step = 0
+    max_psnr = 0
+    max_ssim = 0
+    losses = []
+    psnrs = []
+    ssims = []
+    if opt.resume:
+        print(f"Loading checkpoint: {opt.pre_trained_model}")
+    
+        checkpoint = torch.load(opt.pre_trained_model, map_location=opt.device)
+        net.load_state_dict(checkpoint['model'])
+        optimizer.load_state_dict(checkpoint['optimizer'])
+        start_step = checkpoint['step']
+        max_psnr = checkpoint['max_psnr']
+        max_ssim = checkpoint['max_ssim']
+        losses = checkpoint['losses']
+        psnrs = checkpoint['psnrs']
+        ssims = checkpoint['ssims']
+        print(f"Resumed from step {start_step}, " f"PSNR={max_psnr:.4f}, " f"SSIM={max_ssim:.4f}")
+    train(net, loader_train, loader_val, optimizer, criterion, start_step=start_step, max_psnr=max_psnr, max_ssim=max_ssim, losses=losses, psnrs=psnrs, ssims=ssims)
