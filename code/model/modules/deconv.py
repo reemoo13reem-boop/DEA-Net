@@ -16,7 +16,7 @@ class Conv2d_cd(nn.Module):
         conv_weight = self.conv.weight
         conv_shape = conv_weight.shape
         conv_weight = Rearrange('c_in c_out k1 k2 -> c_in c_out (k1 k2)')(conv_weight)
-        conv_weight_cd = torch.cuda.FloatTensor(conv_shape[0], conv_shape[1], 3 * 3).fill_(0)
+        conv_weight_cd = conv_weight.new_zeros(conv_shape[0], conv_shape[1], 3 * 3)
         conv_weight_cd[:, :, :] = conv_weight[:, :, :]
         conv_weight_cd[:, :, 4] = conv_weight[:, :, 4] - conv_weight[:, :, :].sum(2)
         conv_weight_cd = Rearrange('c_in c_out (k1 k2) -> c_in c_out k1 k2', k1=conv_shape[2], k2=conv_shape[3])(conv_weight_cd)
@@ -56,10 +56,7 @@ class Conv2d_rd(nn.Module):
         else:
             conv_weight = self.conv.weight
             conv_shape = conv_weight.shape
-            if conv_weight.is_cuda:
-                conv_weight_rd = torch.cuda.FloatTensor(conv_shape[0], conv_shape[1], 5 * 5).fill_(0)
-            else:
-                conv_weight_rd = torch.zeros(conv_shape[0], conv_shape[1], 5 * 5)
+            conv_weight_rd = conv_weight.new_zeros(conv_shape[0], conv_shape[1], 5 * 5)
             conv_weight = Rearrange('c_in c_out k1 k2 -> c_in c_out (k1 k2)')(conv_weight)
             conv_weight_rd[:, :, [0, 2, 4, 10, 14, 20, 22, 24]] = conv_weight[:, :, 1:]
             conv_weight_rd[:, :, [6, 7, 8, 11, 13, 16, 17, 18]] = -conv_weight[:, :, 1:] * self.theta
@@ -80,7 +77,7 @@ class Conv2d_hd(nn.Module):
     def get_weight(self):
         conv_weight = self.conv.weight
         conv_shape = conv_weight.shape
-        conv_weight_hd = torch.cuda.FloatTensor(conv_shape[0], conv_shape[1], 3 * 3).fill_(0)
+        conv_weight_hd = conv_weight.new_zeros(conv_shape[0], conv_shape[1], 3 * 3)
         conv_weight_hd[:, :, [0, 3, 6]] = conv_weight[:, :, :]
         conv_weight_hd[:, :, [2, 5, 8]] = -conv_weight[:, :, :]
         conv_weight_hd = Rearrange('c_in c_out (k1 k2) -> c_in c_out k1 k2', k1=conv_shape[2], k2=conv_shape[2])(conv_weight_hd)
@@ -97,7 +94,7 @@ class Conv2d_vd(nn.Module):
     def get_weight(self):
         conv_weight = self.conv.weight
         conv_shape = conv_weight.shape
-        conv_weight_vd = torch.cuda.FloatTensor(conv_shape[0], conv_shape[1], 3 * 3).fill_(0)
+        conv_weight_vd = conv_weight.new_zeros(conv_shape[0], conv_shape[1], 3 * 3)
         conv_weight_vd[:, :, [0, 1, 2]] = conv_weight[:, :, :]
         conv_weight_vd[:, :, [6, 7, 8]] = -conv_weight[:, :, :]
         conv_weight_vd = Rearrange('c_in c_out (k1 k2) -> c_in c_out k1 k2', k1=conv_shape[2], k2=conv_shape[2])(conv_weight_vd)
