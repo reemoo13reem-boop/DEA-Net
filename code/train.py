@@ -27,22 +27,16 @@ def lr_schedule_cosdecay(t, T, init_lr=opt.start_lr, end_lr=opt.end_lr):
     return lr
 
 
-def train(net, loader_train, loader_val,
-          optim, criterion,
-          start_step=0,
-          max_psnr=0,
-          max_ssim=0,
-          losses=None,
-          psnrs=None,
-          ssims=None):
+def train(net, loader_train, loader_val, optim, criterion,
+          start_step=0, max_psnr=0, max_ssim=0,
+          losses=None, psnrs=None, ssims=None):
     losses = []
-
     loss_log = {'L1': [], 'CR': [], 'total': []}
     loss_log_tmp = {'L1': [], 'CR': [], 'total': []}
     psnr_log = []
 
     if losses is None:
-    losses = []
+        losses = []
     
     if psnrs is None:
         psnrs = []
