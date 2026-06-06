@@ -211,7 +211,6 @@ if __name__ == "__main__":
     ssims = []
     if opt.resume:
         print(f"Loading checkpoint: {opt.pre_trained_model}")
-    
         checkpoint = torch.load(opt.pre_trained_model, map_location=opt.device)
         net.load_state_dict(checkpoint['model'])
         optimizer.load_state_dict(checkpoint['optimizer'])
