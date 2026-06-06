@@ -1,6 +1,6 @@
 from torch import nn
 
-from .cga import SpatialAttention, ChannelAttention, PixelAttention
+from model.modules.cga import SpatialAttention, ChannelAttention, PixelAttention
 
 
 class CGAFusion(nn.Module):
