@@ -8,8 +8,8 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--device', type=str,default='Automatic detection')
 
-parser.add_argument('--epochs', type=int,default=20)
-parser.add_argument('--iters_per_epoch', type=int,default=1000)
+parser.add_argument('--epochs', type=int,default=30)
+parser.add_argument('--iters_per_epoch', type=int,default=1500)
 parser.add_argument('--finer_eval_step', type=int,default=15000)
 parser.add_argument('--bs', type=int,default=16,help='batch size')
 parser.add_argument('--start_lr', default=0.0004, type=float, help='start learning rate')
