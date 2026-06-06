@@ -1,7 +1,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .modules import DEABlockTrain, DEBlockTrain, CGAFusion
+from model.modules.deablock_train import DEABlockTrain, DEBlockTrain
+from model.modules.fusion import CGAFusion
 
 
 def default_conv(in_channels, out_channels, kernel_size, bias=True):
