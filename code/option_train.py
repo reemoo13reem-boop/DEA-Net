@@ -32,8 +32,8 @@ parser.add_argument('--saved_infer_dir', type=str, default='saved_infer_dir')
 parser.add_argument('--dataset', type=str, default='NYU2')
 
 # only need for resume
-parser.add_argument('--resume', action='store_true', help='resume training')
-parser.add_argument('--pre_trained_model', type=str,default='null')
+parser.add_argument('--resume', type=bool, default=True)
+parser.add_argument('--pre_trained_model', type=str, default='/kaggle/input/datasets/reemsss/dea-net/checkpoint/best.pk')
 
 opt=parser.parse_args()
 opt.device='cuda' if torch.cuda.is_available() else 'cpu'
