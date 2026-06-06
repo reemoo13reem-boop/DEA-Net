@@ -20,7 +20,7 @@ parser.add_argument('--use_warm_up', type=bool, default=False, help='using warm 
 parser.add_argument('--w_loss_L1', default=1., type=float, help='weight of loss L1')
 parser.add_argument('--w_loss_CR', default=0.1, type=float, help='weight of loss CR')
 
-parser.add_argument('--exp_dir', type=str, default='/kaggle/working//experiment')
+parser.add_argument('--exp_dir', type=str, default='/kaggle/working/experiment')
 parser.add_argument('--model_name', type=str, default='DEANet')
 parser.add_argument('--hazy_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/training_images/data')
 parser.add_argument('--clear_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/original_image/image')
@@ -32,7 +32,7 @@ parser.add_argument('--saved_infer_dir', type=str, default='saved_infer_dir')
 parser.add_argument('--dataset', type=str, default='NYU2')
 
 # only need for resume
-parser.add_argument('--resume', type=bool,default=False)
+parser.add_argument('--resume', action='store_true', help='resume training')
 parser.add_argument('--pre_trained_model', type=str,default='null')
 
 opt=parser.parse_args()
