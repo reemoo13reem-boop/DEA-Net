@@ -35,7 +35,7 @@ parser.add_argument('--dataset', type=str, default='NYU2')
 parser.add_argument('--resume', type=bool, default=False)
 parser.add_argument('--pre_trained_model', type=str, default='null')
 
-opt=parser.parse_args()
+opt, _ = parser.parse_known_args()
 opt.device='cuda' if torch.cuda.is_available() else 'cpu'
 
 dataset_dir = os.path.join(opt.exp_dir, opt.dataset)
