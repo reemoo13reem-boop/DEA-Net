@@ -1,3 +1,3 @@
-from .deablock import DEABlock, DEBlock
-from .deablock_train import DEABlockTrain, DEBlockTrain
-from .fusion import CGAFusion
+from model.modules.deablock import DEABlock, DEBlock
+from model.modules.deablock_train import DEABlockTrain, DEBlockTrain
+from model.modules.fusion import CGAFusion
