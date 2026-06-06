@@ -13,7 +13,7 @@ from metric import psnr, ssim
 from model import DEANet
 from loss import ContrastLoss
 from option_train import opt
-from data.data_loader import TrainDataset, ValDataset
+from data.data_loader import TrainDataset, ValDataset, create_train_val_split
 
 
 start_time = time.time()
