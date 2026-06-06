@@ -4,7 +4,7 @@ import json
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--exp_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/experiment')
+parser.add_argument('--exp_dir', type=str, default='/kaggle/working//experiment')
 parser.add_argument('--dataset', type=str, default='NYU2')
 parser.add_argument('--hazy_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/training_images/data')
 parser.add_argument('--clear_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/original_image/image')
