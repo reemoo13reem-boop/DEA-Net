@@ -183,7 +183,7 @@ if __name__ == "__main__":
     train_list, val_list = create_train_val_split(hazy_dir, clear_dir, val_ratio=0.1)
     train_set = TrainDataset(train_list)
     val_set = ValDataset(val_list)
-    loader_train = DataLoader(dataset=train_set, batch_size=16, shuffle=True, num_workers=12)
+    loader_train = DataLoader(dataset=train_set, batch_size=16, shuffle=True, num_workers=4)
     loader_val = DataLoader(dataset=val_set, batch_size=1, shuffle=False, num_workers=4)
 
     net = DEANet(base_dim=32)
