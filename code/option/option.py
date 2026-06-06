@@ -4,7 +4,7 @@ import json
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--exp_dir', type=str, default='/kaggle/working//experiment')
+parser.add_argument('--exp_dir', type=str, default='/kaggle/working/experiment')
 parser.add_argument('--dataset', type=str, default='NYU2')
 parser.add_argument('--hazy_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/training_images/data')
 parser.add_argument('--clear_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/original_image/image')
@@ -25,7 +25,8 @@ if not os.path.exists(opt.exp_dir):
 if not os.path.exists(exp_dataset_dir):
     os.mkdir(exp_dataset_dir)
 
-opt.saved_infer_dir = os.path.join(exp_model_dir, opt.pre_trained_model.split('.pth')[0])
+model_name = os.path.splitext(os.path.basename(opt.pre_trained_model))[0]
+opt.saved_infer_dir = os.path.join(exp_model_dir, model_name)
 if not os.path.exists(exp_model_dir):
     os.mkdir(exp_model_dir)
     os.mkdir(opt.saved_infer_dir)
