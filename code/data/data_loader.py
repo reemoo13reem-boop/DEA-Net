@@ -16,7 +16,6 @@ def create_train_val_split(hazy_path, clear_path, val_ratio=0.1):
         hazy_name = os.path.basename(hazy_file)
         base_name = os.path.splitext(hazy_name)[0]
         clear_name = '_'.join(base_name.split('_')[:-2]) + '.jpg'
-
         if clear_name not in scene_dict:
             scene_dict[clear_name] = []
         scene_dict[clear_name].append(hazy_name)
@@ -42,7 +41,6 @@ def create_train_val_split(hazy_path, clear_path, val_ratio=0.1):
             )
     random.shuffle(train_list)
     random.shuffle(val_list)
-
     print(f"Training scenes: {len(train_keys)}")
     print(f"Validation scenes: {len(val_keys)}")
     print(f"Training pairs: {len(train_list)}")
@@ -81,7 +79,6 @@ class ValDataset(data.Dataset):
         self.val_list = val_list
 
     def __getitem__(self, index):
-
         hazy_path, clear_path = self.val_list[index]
         hazy = Image.open(hazy_path).convert('RGB')
         clear = Image.open(clear_path).convert('RGB')
@@ -89,7 +86,6 @@ class ValDataset(data.Dataset):
         to_tensor = ToTensor()
         hazy = to_tensor(hazy)
         clear = to_tensor(clear)
-
         return {'hazy': hazy, 'clear': clear, 'filename': filename}
 
     def __len__(self):
