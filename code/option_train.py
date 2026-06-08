@@ -22,8 +22,8 @@ parser.add_argument('--w_loss_CR', default=0.1, type=float, help='weight of loss
 
 parser.add_argument('--exp_dir', type=str, default='/kaggle/working/experiment')
 parser.add_argument('--model_name', type=str, default='DEANet')
-parser.add_argument('--hazy_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/training_images/data')
-parser.add_argument('--clear_dir', type=str, default='/kaggle/input/datasets/reemsss/dea-net/original_image/image')
+parser.add_argument('--hazy_dir', type=str, default='/kaggle/input/datasets/kara0220/dea-net/training_images/data')
+parser.add_argument('--clear_dir', type=str, default='/kaggle/input/datasets/kara0220/dea-net/original_image/image')
 parser.add_argument('--saved_model_dir', type=str, default='saved_model')
 parser.add_argument('--saved_data_dir', type=str, default='saved_data')
 parser.add_argument('--saved_plot_dir', type=str, default='saved_plot')
@@ -33,7 +33,7 @@ parser.add_argument('--dataset', type=str, default='NYU2')
 
 # only need for resume
 parser.add_argument('--resume', type=bool, default=True)
-parser.add_argument('--pre_trained_model', type=str, default='/kaggle/input/datasets/reemsss/dea-net/checkpoint/best.pk')
+parser.add_argument('--pre_trained_model', type=str, default='/kaggle/input/datasets/kara0220/dea-net/checkpoint/best.pk')
 
 opt, _ = parser.parse_known_args()
 opt.device='cuda' if torch.cuda.is_available() else 'cpu'
